@@ -26,8 +26,10 @@ const auth = async (req, res, next) => {
             });
         }
 
-        // Add user to request object
-        req.user = user;
+    // Add user and userId to request object
+    // decoded may contain the userId from token payload; prefer decoded.userId
+    req.user = user;
+    req.userId = decoded && decoded.userId ? decoded.userId : user._id;
         next();
 
     } catch (error) {
