@@ -1,34 +1,27 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
+const {
+  createQuiz,
+  getQuizzesForUser,
+  getQuizById,
+  updateQuiz,
+  deleteQuiz
+} = require('../controllers/quizController');
 
-// Get all quizzes
-router.get('/', (req, res) => {
-    // TODO: Implement get all quizzes
-    res.json({ message: 'Get all quizzes endpoint' });
-});
+// Create a quiz (authenticated)
+router.post('/', auth, createQuiz);
 
-// Get single quiz
-router.get('/:id', (req, res) => {
-    // TODO: Implement get single quiz
-    res.json({ message: `Get quiz ${req.params.id} endpoint` });
-});
+// Get all quizzes for the authenticated user
+router.get('/', auth, getQuizzesForUser);
 
-// Create quiz
-router.post('/', (req, res) => {
-    // TODO: Implement create quiz
-    res.json({ message: 'Create quiz endpoint' });
-});
+// Get single quiz by id (owner only)
+router.get('/:id', auth, getQuizById);
 
-// Update quiz
-router.put('/:id', (req, res) => {
-    // TODO: Implement update quiz
-    res.json({ message: `Update quiz ${req.params.id} endpoint` });
-});
+// Update quiz (owner only)
+router.put('/:id', auth, updateQuiz);
 
-// Delete quiz
-router.delete('/:id', (req, res) => {
-    // TODO: Implement delete quiz
-    res.json({ message: `Delete quiz ${req.params.id} endpoint` });
-});
+// Delete quiz (owner only)
+router.delete('/:id', auth, deleteQuiz);
 
 module.exports = router;
